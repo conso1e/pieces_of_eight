@@ -38,6 +38,18 @@ def heuristic_ManhattanDist(board, goalState):
 
     return manhattanDistance
 
+# implement more generally
+# only words for ordered goal states 
+def heuristic_sumOfPermutationInversions(board):
+    sumOfPermtationInversions = 0
+
+    for currentTileIndex in range(len(board)):
+        for subsequentTileIndex in range(currentTileIndex, len(board)):
+            if board[currentTileIndex] != 0 and board[subsequentTileIndex] != 0: 
+                if board[currentTileIndex] > board[subsequentTileIndex]:
+                    sumOfPermtationInversions += 1
+
+    return sumOfPermtationInversions
 
     
 

@@ -9,17 +9,8 @@ def initializeBoard():
     board = list(range(0, 9))
     while True:
         random.shuffle(board)
-        if computeSumOfPermutationInversions(board) % 2 == 0:
+        if heuristics.heuristic_sumOfPermutationInversions(board) % 2 == 0:
             return board
-
-
-def computeSumOfPermutationInversions(board):
-    sumOfPermtationInversions = 0
-    for currentNumberIndex in range(len(board)):
-        for nextNumbersIndex in range(currentNumberIndex + 1, len(board)):
-            if board[currentNumberIndex] > board[nextNumbersIndex]:
-                sumOfPermtationInversions += 1
-    return sumOfPermtationInversions
 
 
 def displayBoard(board):
@@ -40,10 +31,6 @@ def convertToString(board):
 board = initializeBoard()
 visitedStates = [convertToString(board)]
 goalState = [1, 2, 3, 4, 5, 6, 7, 8, 0]
-
-
-# sample = [5, 0, 8, 4, 2, 1, 7, 3, 6]
-# print(heuristics.heuristic_HammingDist(sample, goalState))
 
 print('Welcome to Pieces of Eight!')
 while True:
@@ -79,7 +66,7 @@ else:
         minimalHeuristic = None
         for successor in heuristics.generateSuccessorStates(board):
             if convertToString(successor) not in visitedStates:
-                heuristicEvaluation = heuristics.heuristic_ManhattanDist(successor, goalState)
+                heuristicEvaluation = heuristics.heuristic_sumOfPermutationInversions(successor)
                 if not minimalHeuristic or heuristicEvaluation < minimalHeuristic:
                     minimalState = successor
                     minimalHeuristic = heuristicEvaluation
