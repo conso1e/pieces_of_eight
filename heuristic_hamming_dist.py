@@ -1,4 +1,4 @@
-import game_functons
+import game_functions
 
 def heuristic_HammingDist(board, goalState):
     hammingDistance = 0
@@ -13,10 +13,13 @@ def heuristic_HammingDist(board, goalState):
 def generateSuccessorStates(board):
     successors = []
     
-    avialableMoves = game_functons.getAvailableMoves(board.index(0))
+    avialableMoves = game_functions.getAvailableMoves(board.index(0))
     for availableMove in avialableMoves:
         successor = list(board)
-        game_functons.move(successor, availableMove)
+        game_functions.move(successor, availableMove)
         successors.append(successor)
 
     return successors
+
+
+

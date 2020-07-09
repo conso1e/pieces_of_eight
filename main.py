@@ -1,9 +1,7 @@
-# TODO: solve infinite loop by adding cycle checking 
-
 import random
 import math
 import time
-import game_functons
+import game_functions
 import heuristic_hamming_dist as hamming
 
 
@@ -38,61 +36,61 @@ def displayBoard(board):
 def convertToString(board):
     return ''.join(map(str, board))  
 
-# start of script
+
 board = initializeBoard()
 visitedStates = [convertToString(board)]
 goalState = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
-print('Welcome to Pieces of Eight')
 
-displayBoard(board)
-
-
-turnCounter = 0
+print('Welcome to Pieces of Eight!')
 while True:
-    turnCounter += 1
-    print('turn', turnCounter)
-
-    minimalState = None
-    minimalHeuristic = None
-    for successor in hamming.generateSuccessorStates(board):
-        if convertToString(successor) not in visitedStates:
-            heuristicEvaluation = hamming.heuristic_HammingDist(successor, goalState)
-            if not minimalHeuristic or heuristicEvaluation < minimalHeuristic:
-                minimalState = successor
-                minimalHeuristic = heuristicEvaluation
-
-    if not minimalState:
-        print('Search Failed. Deadend.')
+    mode = input('Select Mode: Interactive (i) or Demonstration (d): ').upper()
+    if mode == 'I' or mode == 'D':
         break
-    
-    elif game_functons.checkForVictory(minimalState, goalState):
-        displayBoard(minimalState)
-        print('Congrats! Solved in', turnCounter, 'moves.')
-        break
-    else:
-        visitedStates.append(convertToString(minimalState))
-        board = minimalState
-        displayBoard(board)
+    print('Please enter a valid mode.')
 
-    # time.sleep(0.05)
+if mode == 'I':
+    displayBoard(board)
+    while True: 
+        availableMoves = game_functions.getAvailableMoves(board.index(0))
+        print('Available Moves Are:', availableMoves)
+        direction = input('Enter a direction: ').upper()
+        # TODO: translate WASD to UP DN RT LT
+        if direction in availableMoves:
+            game_functions.move(board, direction)
+            displayBoard(board)
+            if game_functions.checkForVictory(board, goalState):
+                print('Congrats!!!')
+                break
+        else:
+            print('Invalid Move')
+            displayBoard(board)
+else:
+    displayBoard(board)
+    turnCounter = 0
+    while True:
+        turnCounter += 1
+        # print('turn', turnCounter)
 
+        minimalState = None
+        minimalHeuristic = None
+        for successor in hamming.generateSuccessorStates(board):
+            if convertToString(successor) not in visitedStates:
+                heuristicEvaluation = hamming.heuristic_HammingDist(successor, goalState)
+                if not minimalHeuristic or heuristicEvaluation < minimalHeuristic:
+                    minimalState = successor
+                    minimalHeuristic = heuristicEvaluation
 
-# main game loop
-# displayBoard(board)
-# while True: 
-#     # input validation loop
-#     availableMoves = getAvailableMoves(board.index(0))
-#     print('Available Moves Are:', availableMoves)
-#     direction = input('Enter a direction: ').upper()
-#     # translate WASD to UP DN RT LT
-#     if direction in availableMoves:
-#         move(board, direction)
-#         displayBoard(board)
-#         if checkForVictory(board, victoryState):
-#             print('Congrats!!!')
-#             break
-#     else:
-#         print('Invalid Move')
-#         displayBoard(board)
-
+        if not minimalState:
+            print('Search failed in', turnCounter, 'moves. Deadend.')
+            break
+        
+        elif game_functions.checkForVictory(minimalState, goalState):
+            displayBoard(minimalState)
+            print('Congrats! Solved in', turnCounter, 'moves.')
+            break
+        else:
+            visitedStates.append(convertToString(minimalState))
+            board = minimalState
+            
+        # time.sleep(0.1)
