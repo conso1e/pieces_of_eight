@@ -2,7 +2,7 @@ import random
 import math
 import time
 import game_functions
-import heuristic_hamming_dist as hamming
+import heuristics
 
 
 def initializeBoard():
@@ -42,6 +42,9 @@ visitedStates = [convertToString(board)]
 goalState = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 
 
+# sample = [5, 0, 8, 4, 2, 1, 7, 3, 6]
+# print(heuristics.heuristic_HammingDist(sample, goalState))
+
 print('Welcome to Pieces of Eight!')
 while True:
     mode = input('Select Mode: Interactive (i) or Demonstration (d): ').upper()
@@ -74,9 +77,9 @@ else:
 
         minimalState = None
         minimalHeuristic = None
-        for successor in hamming.generateSuccessorStates(board):
+        for successor in heuristics.generateSuccessorStates(board):
             if convertToString(successor) not in visitedStates:
-                heuristicEvaluation = hamming.heuristic_HammingDist(successor, goalState)
+                heuristicEvaluation = heuristics.heuristic_ManhattanDist(successor, goalState)
                 if not minimalHeuristic or heuristicEvaluation < minimalHeuristic:
                     minimalState = successor
                     minimalHeuristic = heuristicEvaluation
