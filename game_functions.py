@@ -3,11 +3,11 @@ import math
 import heuristics
 
 
-def initializeBoard():
+def initializeBoard(goalState):
     board = list(range(0, 9))
     while True:
         random.shuffle(board)
-        if heuristics.heuristic_sumOfPermutationInversions(board) % 2 == 0:
+        if heuristics.heuristic_sumOfPermutationInversions(board, goalState) % 2 == 0:
             return board
 
 def displayBoard(board):

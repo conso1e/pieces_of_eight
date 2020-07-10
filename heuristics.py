@@ -30,16 +30,21 @@ def heuristic_ManhattanDist(board, goalState):
             manhattanDistance += abs(tileRow - targetRow) + abs(tileCol - targetCol)
     return manhattanDistance
 
-# implement more generally
-# only words for ordered goal states 
-def heuristic_sumOfPermutationInversions(board):
+def heuristic_sumOfPermutationInversions(board, goalState):
     sumOfPermtationInversions = 0
-    for currentTileIndex in range(len(board)):
-        for subsequentTileIndex in range(currentTileIndex, len(board)):
-            if board[currentTileIndex] != 0 and board[subsequentTileIndex] != 0: 
-                if board[currentTileIndex] > board[subsequentTileIndex]:
+    for tile in board:
+        if tile != 0:
+            preceedingElements = []
+            # -1 as ending index because it is non-inclusive 
+            for preceedingElementIndex in range(goalState.index(tile), -1, -1):
+                if goalState[preceedingElementIndex] != 0:
+                    preceedingElements.append(goalState[preceedingElementIndex])
+            for succeedingTiles in range(board.index(tile), len(board)):
+                if succeedingTiles in preceedingElements:
                     sumOfPermtationInversions += 1
     return sumOfPermtationInversions
+
+
 
     
 
